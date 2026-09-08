@@ -1,0 +1,27 @@
+[package]
+name = "prune-source"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.96"
+license = "ISC"
+description = "Prune Python function bodies before compiling abstract syntax trees."
+publish = false
+
+[lib]
+name = "_native"
+path = "rust/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.28.0", features = ["abi3-py310", "extension-module"] }
+# Ruff's component crates intentionally have no stable Rust API and must stay in lockstep.
+ruff_python_ast = "=0.0.11"
+# The local copy only exposes two lexer accessors; see its UPSTREAM.md.
+ruff_python_parser = { path = "vendor/ruff_python_parser" }
+
+[workspace]
+exclude = ["vendor/ruff_python_parser"]
+
+[profile.release]
+codegen-units = 1
+lto = "thin"

@@ -1,0 +1,3 @@
+RUFF_VERSION: str
+
+def prune_source(source: str) -> str | None: ...

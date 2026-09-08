@@ -1,0 +1,36 @@
+[build-system]
+requires = ["maturin>=1.10,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "prune-source"
+version = "0.1.0"
+description = "Prune Python function bodies before compiling abstract syntax trees."
+authors = [{name = "Timothée Mazzucotelli", email = "dev@pawamoy.fr"}]
+license = "ISC"
+license-files = ["LICENSE", "vendor/ruff_python_parser/LICENSE"]
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["ast", "parser", "python", "ruff", "static-analysis"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Rust",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.2"]
+
+[tool.maturin]
+bindings = "pyo3"
+module-name = "prune_source._native"
+python-source = "python"
+strip = true
