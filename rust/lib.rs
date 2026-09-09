@@ -81,7 +81,7 @@ impl DefinitionHeader {
 
     /// Consume a token from a `class` or `def` header and report its suite colon.
     fn advance(&mut self, token: Token, source: &str) -> bool {
-        if !self.name_seen && token.kind == TokenKind::Name {
+        if !self.name_seen && (token.kind == TokenKind::Name || token.kind.is_soft_keyword()) {
             self.name_seen = true;
             let name = &source[token.start..token.end];
             self.is_init = name == "__init__"
@@ -625,6 +625,16 @@ mod tests {
     fn keeps_nfkc_normalized_class_init_implementation() {
         let source = "class C:\n    def __𝒊nit__(self):\n        self.value = 1\n";
         assert_eq!(prune(source), None);
+    }
+
+    #[test]
+    fn recognizes_soft_keywords_as_function_names() {
+        for name in ["case", "match", "type", "lazy"] {
+            let source =
+                format!("class C:\n    def {name}(__init__):\n        implementation = 1\n");
+            let output = pruned(&source);
+            assert!(!output.contains("implementation"), "method name: {name}");
+        }
     }
 
     #[test]

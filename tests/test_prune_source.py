@@ -72,6 +72,21 @@ def test_keeps_nfkc_normalized_class_init_implementation() -> None:
     assert "removed = 1" not in pruned
 
 
+def test_prunes_soft_keyword_method_implementations() -> None:
+    for method_name in ("case", "match", "type", "lazy"):
+        source = (
+            "class Example:\n"
+            f"    def {method_name}(__init__):\n"
+            "        implementation = 1\n"
+        )
+
+        pruned = prune_source(source)
+
+        assert pruned is not None
+        assert "implementation" not in pruned
+        compile(pruned, "example.py", "exec", ast.PyCF_ONLY_AST, optimize=1)
+
+
 def test_handles_inline_suite_with_explicit_line_continuation() -> None:
     source = "def predicate(): return first or \\\n    second\nvalue = 1\n"
 
