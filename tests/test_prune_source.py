@@ -49,6 +49,29 @@ def test_keeps_class_init_implementation() -> None:
     compile(pruned, "example.py", "exec", ast.PyCF_ONLY_AST, optimize=1)
 
 
+def test_keeps_nfkc_normalized_class_init_implementation() -> None:
+    source = (
+        "class Example:\n"
+        "    def __𝒊nit__(self):\n"
+        "        self.value = 42\n"
+        "    def method(self):\n"
+        "        removed = 1\n"
+    )
+
+    pruned = prune_source(source)
+
+    assert pruned is not None
+    tree = ast.parse(pruned)
+    class_definition = tree.body[0]
+    assert isinstance(class_definition, ast.ClassDef)
+    init = class_definition.body[0]
+    assert isinstance(init, ast.FunctionDef)
+    assert init.name == "__init__"
+    assert isinstance(init.body[0], ast.Assign)
+    assert "self.value = 42" in pruned
+    assert "removed = 1" not in pruned
+
+
 def test_handles_inline_suite_with_explicit_line_continuation() -> None:
     source = "def predicate(): return first or \\\n    second\nvalue = 1\n"
 

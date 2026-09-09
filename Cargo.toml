@@ -18,6 +18,7 @@ pyo3 = { version = "0.28.0", features = ["abi3-py310", "extension-module"] }
 ruff_python_ast = "=0.0.11"
 # The local copy only exposes two lexer accessors; see its UPSTREAM.md.
 ruff_python_parser = { path = "vendor/ruff_python_parser" }
+unicode-normalization = "0.1.25"
 
 [workspace]
 exclude = ["vendor/ruff_python_parser"]

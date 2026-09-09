@@ -409,6 +409,7 @@ dependencies = [
  "pyo3",
  "ruff_python_ast",
  "ruff_python_parser",
+ "unicode-normalization",
 ]
 
 [[package]]

@@ -5,6 +5,7 @@ use pyo3::prelude::*;
 use pyo3::pybacked::PyBackedStr;
 use ruff_python_ast::token::{TokenFlags, TokenKind};
 use ruff_python_parser::{Mode, lexer};
+use unicode_normalization::UnicodeNormalization;
 
 #[derive(Clone, Copy, Eq, PartialEq)]
 enum Scope {
@@ -82,7 +83,9 @@ impl DefinitionHeader {
     fn advance(&mut self, token: Token, source: &str) -> bool {
         if !self.name_seen && token.kind == TokenKind::Name {
             self.name_seen = true;
-            self.is_init = &source[token.start..token.end] == "__init__";
+            let name = &source[token.start..token.end];
+            self.is_init = name == "__init__"
+                || (token.flags.is_non_ascii_name() && name.nfkc().eq("__init__".chars()));
             return false;
         }
 
@@ -615,6 +618,12 @@ mod tests {
     #[test]
     fn keeps_class_init_implementation() {
         let source = "class C:\n    def __init__(self):\n        self.value = 1\n";
+        assert_eq!(prune(source), None);
+    }
+
+    #[test]
+    fn keeps_nfkc_normalized_class_init_implementation() {
+        let source = "class C:\n    def __𝒊nit__(self):\n        self.value = 1\n";
         assert_eq!(prune(source), None);
     }
 
