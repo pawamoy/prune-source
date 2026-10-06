@@ -403,7 +403,7 @@ dependencies = [
 
 [[package]]
 name = "prune-source"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "pyo3",
  "ruff_python_ast",
