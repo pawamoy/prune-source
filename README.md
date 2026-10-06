@@ -35,8 +35,6 @@ The input is expected to be valid for the Python interpreter that will compile i
 not perform grammar or version validation. `prune_source` returns `None` when there is nothing to
 prune; callers should compile their original source in that case.
 
-Ruff's internal parser crate is vendored because its public lexer API does not expose token ranges.
-The vendored copy has exactly two source changes, making the range and flag accessors public; see
-`vendor/ruff_python_parser/UPSTREAM.md`.
+The pruner uses Ruff's published parser crate to read token ranges and flags without constructing a syntax tree. Ruff's Rust API is unstable, so its component crates are pinned to the same version.
 
 Building from source requires Rust 1.96 or newer.

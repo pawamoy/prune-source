@@ -81,11 +81,12 @@ impl DefinitionHeader {
 
     /// Consume a token from a `class` or `def` header and report its suite colon.
     fn advance(&mut self, token: Token, source: &str) -> bool {
-        if !self.name_seen && (token.kind == TokenKind::Name || token.kind.is_soft_keyword()) {
+        if !self.name_seen && (token.kind == TokenKind::Identifier || token.kind.is_soft_keyword())
+        {
             self.name_seen = true;
             let name = &source[token.start..token.end];
             self.is_init = name == "__init__"
-                || (token.flags.is_non_ascii_name() && name.nfkc().eq("__init__".chars()));
+                || (token.flags.is_non_ascii_identifier() && name.nfkc().eq("__init__".chars()));
             return false;
         }
 
@@ -562,7 +563,7 @@ fn prune_source(py: Python<'_>, source: PyBackedStr) -> Option<String> {
 
 #[pymodule]
 fn _native(module: &Bound<'_, PyModule>) -> PyResult<()> {
-    module.add("RUFF_VERSION", "0.16.5")?;
+    module.add("RUFF_VERSION", "0.16.9")?;
     module.add_function(wrap_pyfunction!(prune_source, module)?)?;
     Ok(())
 }

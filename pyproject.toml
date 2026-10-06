@@ -8,7 +8,7 @@ version = "0.1.4"
 description = "Prune Python function bodies before compiling abstract syntax trees."
 authors = [{name = "Timothée Mazzucotelli", email = "dev@pawamoy.fr"}]
 license = "ISC"
-license-files = ["LICENSE", "vendor/ruff_python_parser/LICENSE"]
+license-files = ["LICENSE", "licenses/ruff.LICENSE"]
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = ["ast", "parser", "python", "ruff", "static-analysis"]

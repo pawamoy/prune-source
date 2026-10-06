@@ -143,4 +143,4 @@ def test_python_314_t_string_signature() -> None:
 
 
 def test_exposes_ruff_version() -> None:
-    assert RUFF_VERSION == "0.16.5"
+    assert RUFF_VERSION == "0.16.9"
