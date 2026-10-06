@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "prune-source"
-version = "0.1.4"
+version = "0.1.5"
 description = "Prune Python function bodies before compiling abstract syntax trees."
 authors = [{name = "Timothée Mazzucotelli", email = "dev@pawamoy.fr"}]
 license = "ISC"
@@ -13,7 +13,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["ast", "parser", "python", "ruff", "static-analysis"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
